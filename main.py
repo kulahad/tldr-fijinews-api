@@ -30,17 +30,17 @@ except TimeoutException:
 # with selenium elements of the titles.
 
 # find_elements_by_xpath - Returns an array of selenium objects.
-elementsRoot = browser.find_elements(By.TAG_NAME, 'div')
+titles_element = browser.find_elements_by_xpath("//div[@class='col-md-3 pt-2']")
 
 # List Comprehension to get the actual titles and not the selenium objects.
-# titles = [x.text for x in titles_element]
+titles = [x.text for x in titles_element]
 
 # print response in terminal
 print('TITLES:')
-print(elementsRoot, '\n')
+print(titles_element, '\n')
 
 print('EACH TITLES:')
-for val in elementsRoot:
+for val in titles_element:
     try:
         val
     except NameError:
