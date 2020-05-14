@@ -4,5 +4,7 @@ Oh well, my idea is to automate a service which would scrape data from some of t
 
 ## Resources Used
 Selenium
+
 ChromeDriver - WebDriver for Chrome
+
 Selenium-Python ReadTheDocs
