@@ -7,7 +7,7 @@ from selenium.common.exceptions import TimeoutException
 # Specifying incognito mode as you launch your browser[OPTIONAL]
 option = webdriver.ChromeOptions()
 option.add_argument("--incognito")
-option.add_argument("--headless")
+# option.add_argument("--headless")
 
 # Create new Instance of Chrome in incognito mode
 browser = webdriver.Chrome(executable_path=r'D:/Projects/Python 3/chromedriver', chrome_options=option)
@@ -30,14 +30,24 @@ except TimeoutException:
 # with selenium elements of the titles.
 
 # find_elements_by_xpath - Returns an array of selenium objects.
-titles_element = browser.find_elements_by_xpath("//h6")
+elementsRoot = browser.find_elements(By.TAG_NAME, 'div')
 
 # List Comprehension to get the actual titles and not the selenium objects.
-titles = [x.text for x in titles_element]
+# titles = [x.text for x in titles_element]
 
 # print response in terminal
 print('TITLES:')
-print(titles, '\n')
+print(elementsRoot, '\n')
 
-for val in titles:
-    print(val)
+print('EACH TITLES:')
+for val in elementsRoot:
+    try:
+        val
+    except NameError:
+        print("well, it WASN'T defined after all!")
+    else:
+        print("sure, it was defined.")
+        print(val.text)
+
+
+browser.quit()
