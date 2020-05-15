@@ -25,9 +25,6 @@ except TimeoutException:
     print("Timed out waiting for page to load")
     browser.quit()
 
-# Get all of the titles for the pinned repositories
-# We are not just getting pure titles but we are getting a selenium object
-# with selenium elements of the titles.
 
 # find_elements_by_xpath - Returns an array of selenium objects.
 Divs_element = browser.find_elements_by_xpath("//div[@class='row mt-2']")
