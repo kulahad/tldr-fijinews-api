@@ -7,7 +7,7 @@ from selenium.common.exceptions import TimeoutException
 # Specifying incognito mode as you launch your browser[OPTIONAL]
 option = webdriver.ChromeOptions()
 option.add_argument("--incognito")
-# option.add_argument("--headless")
+option.add_argument("--headless")
 
 # Create new Instance of Chrome in incognito mode
 browser = webdriver.Chrome(executable_path=r'D:/Projects/Python 3/chromedriver', chrome_options=option)
@@ -30,24 +30,53 @@ except TimeoutException:
 # with selenium elements of the titles.
 
 # find_elements_by_xpath - Returns an array of selenium objects.
-titles_element = browser.find_elements_by_xpath("//div[@class='col-md-3 pt-2']")
+Divs_element = browser.find_elements_by_xpath("//div[@class='row mt-2']")
 
-# List Comprehension to get the actual titles and not the selenium objects.
-titles = [x.text for x in titles_element]
+# Find all h6 elements in parent div element
+link_element = [x.find_elements_by_xpath('//a[@href]') for x in Divs_element]
+Title_element = [x.find_elements_by_css_selector('h6') for x in Divs_element]
 
-# print response in terminal
-print('TITLES:')
-print(titles_element, '\n')
-
-print('EACH TITLES:')
-for val in titles_element:
+for Parent_Div in Divs_element:
+    print("Parent Div:")
+    title = Parent_Div.find_element_by_css_selector('h6')
+    print("Title: ", title.text)
+    link_element = Parent_Div.find_element_by_css_selector('a')
     try:
-        val
+        link_element
     except NameError:
         print("well, it WASN'T defined after all!")
     else:
-        print("sure, it was defined.")
-        print(val.text)
+        link = link_element.get_attribute("href")
+        print("Link: ", link)
+        print("\n")
+
+
+
+# print('TITLES:')
+# for title in Title_element:
+#     for val in title:
+#         print(val.text, '\n')
+#
+# print('LINKS:')
+# for link in link_element:
+#     for val in link:
+#         print(val.text, '\n')
+# # List Comprehension to get the actual titles and not the selenium objects.
+# Divs = [x.text for x in Divs_element]
+#
+# # print response in terminal
+# print('Divs:')
+# print(Divs_element, '\n')
+
+# print('EACH TITLES:')
+# for val in Divs_element:
+#     try:
+#         val
+#     except NameError:
+#         print("well, it WASN'T defined after all!")
+#     else:
+#         print("sure, it was defined.")
+#         print(val.text)
 
 
 browser.quit()
