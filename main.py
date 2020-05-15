@@ -33,13 +33,25 @@ except TimeoutException:
 Divs_element = browser.find_elements_by_xpath("//div[@class='row mt-2']")
 
 # Find all h6 elements in parent div element
-link_element = [x.find_elements_by_xpath('//a[@href]') for x in Divs_element]
-Title_element = [x.find_elements_by_css_selector('h6') for x in Divs_element]
 
 for Parent_Div in Divs_element:
+    all_children_by_xpath = Parent_Div.find_elements_by_xpath(".//*")
+    for child in all_children_by_xpath:
+        # Check for 'h' elements and use it as 'Title'
+        # Check for 'a' elements and use it as 'Link'
+        # Check for 'span' elements and use it as 'NewsAge'
+        # Check for 'inner div' elements and use it as 'Short Description'
+        print("child : " + child.tag_name, child.text)
     print("Parent Div:")
     title = Parent_Div.find_element_by_css_selector('h6')
-    print("Title: ", title.text)
+
+    try:
+        title
+    except NameError:
+        print("well, it WASN'T defined after all!")
+    else:
+        print("Title: ", title.text)
+
     link_element = Parent_Div.find_element_by_css_selector('a')
     try:
         link_element
@@ -49,8 +61,6 @@ for Parent_Div in Divs_element:
         link = link_element.get_attribute("href")
         print("Link: ", link)
         print("\n")
-
-
 
 # print('TITLES:')
 # for title in Title_element:
