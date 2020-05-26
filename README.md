@@ -8,3 +8,7 @@ Selenium
 ChromeDriver - WebDriver for Chrome
 
 Selenium-Python ReadTheDocs
+
+BS4- BeautifulSoup 
+
+SqlLite3
