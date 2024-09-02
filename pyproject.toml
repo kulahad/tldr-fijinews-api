@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "webscraping-fijinews"
+version = "0.1.0"
+description = "scraping news for fiji"
+authors = ["Mohammed Ahad"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ipykernel = "^6.29.5"
+
+[tool.poetry.group.dev.dependencies]
+selenium = "^4.24.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
