@@ -10,3 +10,4 @@ class News(Document):
     article_url: str
     image_url: str
     publish_time: str 
+    source: str

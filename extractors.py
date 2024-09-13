@@ -32,6 +32,7 @@ class extractor(ABC):
 class fijivillage(extractor):
     def __init__(self):
         self.url = "https://fijivillage.com/news"
+        self.source = "Fijivillage"
 
     def htmlparser(self):
         content = self.extracthtml()
@@ -58,15 +59,14 @@ class fijivillage(extractor):
             img_tag = soup.find('img')
             image_url = img_tag.get('src') if img_tag else None
 
-            time_span = soup.find('span')
-            time = time_span.get_text()
-
             # get article from url
             page = BeautifulSoup(requests.get(article_url).content, "html.parser")
             article = page.find("div", class_="news_reader")
 
-            summary = summarizetext(article.text)
+            time_span = page.find('span', class_="greytime2")
+            time = time_span.get_text()
 
+            summary = summarizetext(article.text)
             
             return {
                 'id':article_url,
@@ -75,6 +75,7 @@ class fijivillage(extractor):
                 'article_url': article_url,
                 'publish_time': time,
                 'image_url': image_url,
+                'source': self.source
             }
         except Exception as e:
             print(f"Error parsing HTML snippet: {e}")

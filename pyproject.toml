@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "webscraping-fijinews"
+name = "TLDRFijiNewsAPI"
 version = "0.1.0"
 description = "scraping news for fiji"
 authors = ["Mohammed Ahad"]
