@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-import pymongo
 from extractors import fijivillage
 from motor.motor_asyncio import AsyncIOMotorClient
-from beanie import WriteRules, init_beanie
+from beanie import init_beanie
 from contextlib import asynccontextmanager
 from beanie.operators import In
 from models import News
@@ -42,8 +41,17 @@ async def grabnews():
     # store data in db
     news = fijivillage()
     newslist = [News(**item) for item in news.htmlparser()]
-    try:
-        return await News.insert_many(newslist)
+    newarticles = 0
+    duplicatearticles = 0
 
-    except pymongo.errors.BulkWriteError as e:
-        return e.details['writeErrors']
+    for news in newslist:
+        exists = await News.get(news.id)
+        if bool(exists):
+            print("Article already exits in db")
+            duplicatearticles += 1
+        else:
+            await News.insert(news)
+            newarticles += 1
+
+    return {"message": f"{newarticles} new articles added, {duplicatearticles} duplicate articles ignored."}
+    
