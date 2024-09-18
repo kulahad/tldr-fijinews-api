@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from extractors import fijivillage
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
@@ -7,6 +8,7 @@ from beanie.operators import In
 from models import News
 import os
 from dotenv import load_dotenv
+from fastapi.openapi.utils import get_openapi
 
 load_dotenv()
 
@@ -26,9 +28,25 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.get("/")
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="tldr-fijinews-api",
+        version="0.1.0",
+        summary="A streamlined API for aggregating and summarizing news from Fijian sources.",
+        description="Get concise, up-to-date local news at your fingertips.",
+        routes=app.routes,
+    )
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
+@app.get("/", include_in_schema=False)
 async def main():
-    return "Welcome to TLDR Fiji news api, check /docs for more!"
+    return RedirectResponse(app.docs_url)
 
 @app.get("/news")
 async def news():
@@ -54,4 +72,5 @@ async def grabnews():
             newarticles += 1
 
     return {"message": f"{newarticles} new articles added, {duplicatearticles} duplicate articles ignored."}
+    
     

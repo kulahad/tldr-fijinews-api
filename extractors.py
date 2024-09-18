@@ -2,7 +2,6 @@ from abc import ABC,abstractmethod
 import requests
 from bs4 import BeautifulSoup
 from summarize import summarizetext
-from models import News
 
 
 
@@ -14,30 +13,21 @@ class extractor(ABC):
     def htmlparser(self):
         pass
 
-    def savetodb(self, data):
-        # save all data to db
-        print("Sending data to DB")
-
     def extracthtml(self):
         page = requests.get(self.url)
         return BeautifulSoup(page.content, "html.parser")
-    
-    def run(self):
-        data = self.htmlparser()
-        self.savetodb(data=data)
-
-
 
 
 class fijivillage(extractor):
     def __init__(self):
         self.url = "https://fijivillage.com/news"
         self.source = "Fijivillage"
+        self.limit = 10
 
     def htmlparser(self):
         content = self.extracthtml()
-        # only process 10 articles
-        newsdivs = content.find_all("div", class_="col-md-4 pt-2")[:10]
+        # only process articles limited by the limit defined
+        newsdivs = content.find_all("div", class_="col-md-4 pt-2")[:self.limit]
         news = []
 
         for div in newsdivs:
@@ -47,7 +37,7 @@ class fijivillage(extractor):
 
     def extractinfo(self,divdata):
         try:
-            soup = BeautifulSoup(str(divdata), "html.parser")
+            soup = BeautifulSoup(str(divdata))
             
             # Extract the article URL and title
             article_link = soup.find('a', href=True)
@@ -63,8 +53,8 @@ class fijivillage(extractor):
             page = BeautifulSoup(requests.get(article_url).content, "html.parser")
             article = page.find("div", class_="news_reader")
 
-            time_span = page.find('span', class_="greytime2")
-            time = time_span.get_text()
+            date_span = page.find('span', class_="greytime2")
+            date = date_span.get_text().split(" ")[1]
 
             summary = summarizetext(article.text)
             
@@ -73,7 +63,7 @@ class fijivillage(extractor):
                 'title': article_title,
                 'summary': summary,
                 'article_url': article_url,
-                'publish_time': time,
+                'publish_time': date,
                 'image_url': image_url,
                 'source': self.source
             }
@@ -81,7 +71,3 @@ class fijivillage(extractor):
             print(f"Error parsing HTML snippet: {e}")
             return None
     
-
-if __name__ == "__main__":
-    test = fijivillage()
-    test.run()
