@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from extractors import fijivillage
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
@@ -43,9 +44,9 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def main():
-    return "Welcome to TLDR Fiji news api, check /docs for more!"
+    return RedirectResponse(app.docs_url)
 
 @app.get("/news")
 async def news():
