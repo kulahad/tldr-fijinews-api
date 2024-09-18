@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "TLDRFijiNewsAPI"
+name = "tldr-fijinews-api"
 version = "0.1.0"
 description = "scraping news for fiji"
 authors = ["Mohammed Ahad"]
@@ -27,3 +27,4 @@ python-dotenv = "^1.0.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
