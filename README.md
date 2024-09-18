@@ -71,21 +71,14 @@ This command starts the FastAPI server with hot-reloading enabled for developmen
 
 The API provides the following endpoints:
 
-1. **Main Endpoint**
-
-   - URL: `/`
-   - Method: GET
-   - Description: Main entry point of the API
-   - Response: 200 OK with JSON content
-
-2. **News Endpoint**
+1. **News Endpoint**
 
    - URL: `/news`
    - Method: GET
    - Description: Retrieve aggregated news data
    - Response: 200 OK with JSON content containing news items
 
-3. **Grab News Endpoint**
+2. **Grab News Endpoint**
    - URL: `/grabnews`
    - Method: POST
    - Description: Trigger the news scraping process
