@@ -31,13 +31,14 @@ class fijivillage(extractor):
         news = []
 
         for div in newsdivs:
-            news.append(self.extractinfo(divdata=div))
+            
+            news.append(self.extractinfo(div=div))
         
         return news
 
-    def extractinfo(self,divdata):
+    def extractinfo(self,div):
         try:
-            soup = BeautifulSoup(str(divdata))
+            soup = BeautifulSoup(str(div).encode('utf-8').decode('ascii', 'ignore'), "html.parser")
             
             # Extract the article URL and title
             article_link = soup.find('a', href=True)
@@ -71,3 +72,6 @@ class fijivillage(extractor):
             print(f"Error parsing HTML snippet: {e}")
             return None
     
+if __name__ == '__main__':
+    test = fijivillage()
+    print(test.htmlparser())    
