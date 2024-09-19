@@ -14,9 +14,10 @@ from sumy.utils import get_stop_words
 LANGUAGE = "english"
 SENTENCES_COUNT = 3
 
+
 def summarizetext(text):
     parser = PlaintextParser.from_string(text, Tokenizer(LANGUAGE))
-    
+
     stemmer = Stemmer(LANGUAGE)
     summarizer = Summarizer(stemmer)
     summarizer.stop_words = get_stop_words(LANGUAGE)
@@ -26,4 +27,3 @@ def summarizetext(text):
         paragraph += str(sentence)
 
     return paragraph
-
