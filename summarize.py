@@ -27,8 +27,3 @@ def summarizetext(text):
 
     return paragraph
 
-if __name__ == "__main__":
-    url = "https://www.fijivillage.com/news/Police-arrest-suspect-in-Raiwaqa-murder-case-after-manhunt-5r84fx/"
-    
-    s = summarizetext(url=url)
-    print(s)
