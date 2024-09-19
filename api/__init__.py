@@ -9,11 +9,12 @@ from models import News
 import os
 from dotenv import load_dotenv
 from fastapi.openapi.utils import get_openapi
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-MONGODB_URI = os.getenv('MONGODB_URI')
-MONGODB_DBNAME = os.getenv('MONGODB_DBNAME')
+MONGODB_URI = os.getenv("MONGODB_URI")
+MONGODB_DBNAME = os.getenv("MONGODB_DBNAME")
 
 
 async def init():
@@ -26,7 +27,16 @@ async def lifespan(app: FastAPI):
     await init()
     yield
 
+
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
+
 
 def custom_openapi():
     if app.openapi_schema:
@@ -44,15 +54,18 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
+
 @app.get("/", include_in_schema=False)
 async def main():
     return RedirectResponse(app.docs_url)
+
 
 @app.get("/news")
 async def news():
     # get data from db
     news = await News.find_all().to_list()
     return news
+
 
 @app.post("/grabnews")
 async def grabnews():
@@ -71,6 +84,6 @@ async def grabnews():
             await News.insert(news)
             newarticles += 1
 
-    return {"message": f"{newarticles} new articles added, {duplicatearticles} duplicate articles ignored."}
-    
-    
+    return {
+        "message": f"{newarticles} new articles added, {duplicatearticles} duplicate articles ignored."
+    }
